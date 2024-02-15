@@ -7,17 +7,17 @@ import os
 import websockets
 import gradio as gr
 import torch
-from diffusers import StableDiffusionPipeline
+# from diffusers import StableDiffusionPipeline
+import requests 
 
-
-# import base64
+import base64
 # import time
-# from functools import partial
+from functools import partial
 # import requests
-# from PIL import Image, PngImagePlugin
+from PIL import Image, PngImagePlugin
 # # from diffusers.utils import load_image
-# import io
-# from io import BytesIO
+import io
+from io import BytesIO
 from threading import Thread, Timer
 # import random
 # from helpers import *
@@ -38,30 +38,30 @@ from threading import Thread, Timer
 
 
 
-from configdata import status, pipelines
+from configdata import status, pipelines, config, payload
 from lib.status import statusEncode, statusSend, checkReadyState
-from gpt4all import GPT4All
+# from gpt4all import GPT4All
 
 
-def transform_prompt(context, transform_prompt,max_tokens, ):
-    # model = GPT4All('gpt4all-falcon-q4_0.gguf', model_path="/home/kaos/.local/share/nomic.ai/GPT4All/" )
-    model = GPT4All('mistral-7b-instruct-v0.1.Q4_0.gguf', model_path="/home/kaos/.local/share/nomic.ai/GPT4All/" )
-    # model = GPT4All('Mistral Instruct')
-    system_template = context 
-    prompt_template = 'USER: {0}\nASSISTANT: '
-    with model.chat_session(system_template, prompt_template):
-        response = model.generate(transform_prompt, max_tokens=max_tokens, temp=0.7)
-        # print(response)
-        transformedprompt = response
-    return transformedprompt
+# def transform_prompt(context, transform_prompt,max_tokens, ):
+#     # model = GPT4All('gpt4all-falcon-q4_0.gguf', model_path="/home/kaos/.local/share/nomic.ai/GPT4All/" )
+#     model = GPT4All('mistral-7b-instruct-v0.1.Q4_0.gguf', model_path="/home/kaos/.local/share/nomic.ai/GPT4All/" )
+#     # model = GPT4All('Mistral Instruct')
+#     system_template = context 
+#     prompt_template = 'USER: {0}\nASSISTANT: '
+#     with model.chat_session(system_template, prompt_template):
+#         response = model.generate(transform_prompt, max_tokens=max_tokens, temp=0.7)
+#         # print(response)
+#         transformedprompt = response
+#     return transformedprompt
 
 
-def genImg(prompt):
-    pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5") ##, torch_dtype=torch.float32)
-    pipe = pipe.to("cuda")
-    # prompt = "a photo of an astronaut riding a horse on mars"
-    image = pipe(prompt).images[0]
-    image.save("test.png")
+# def genImg(prompt):
+#     pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5") ##, torch_dtype=torch.float32)
+#     pipe = pipe.to("cuda")
+#     # prompt = "a photo of an astronaut riding a horse on mars"
+#     image = pipe(prompt).images[0]
+#     image.save("test.png")
 
 
 # input = sys.argv[1]
@@ -96,8 +96,63 @@ def initApp(apptype):
     elif (apptype == "control"):
         print("ready to control")
         statusSend(status)
-    if (apptype == "transformer"):
+    if (apptype == "lawmaker"):
         statusSend(status)
+
+def encode_file_to_base64(path):
+    with open(path, 'rb') as file:
+        return base64.b64encode(file.read()).decode('utf-8')
+    
+def decode_and_save_base64(base64_str, save_path):
+    if base64_str.startswith("data:image/png;base64,"):
+        b64 = base64_str[len("data:image/png;base64,"):]
+    else: 
+        b64 =  base64_str  # or whatever
+    with open(save_path, "wb") as file:
+        file.write(base64.b64decode(b64))
+    
+async def generateAndSwapFace(prompt, face):
+    '''
+    create a new image using Automatic1111 + reactor
+    '''
+    global status
+    status["sdparams"]["aiready"] = False
+    steps = status["sdparams"]["steps"]
+    denoising = status["sdparams"]["denoising"]
+    sdsavedir = status["sdparams"]["sdsavedir"]
+
+    controlnetpose = encode_file_to_base64("img/pose.png")
+    # controlnetpose = "img/pose.png"
+    # inputface = encode_file_to_base64("img/kop.jpg")
+    # inputface = "img/kop.jpg"
+    inputface = "/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/kop.jpg"
+    prompt = "(8k, best quality, masterpiece, highly detailed:1.1),realistic photo of fantastic happy woman,hairstyle of blonde and red short bob hair,modern clothing,cinematic lightning,film grain,dynamic pose,bokeh,dof"
+    neg = "ng_deepnegative_v1_75t,worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),((grayscale)),negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred))"
+    payload['alwayson_scripts']['ControlNet']['args'][0]['image']['image'] = controlnetpose
+    payload['alwayson_scripts']['ControlNet']['args'][0]['image']['mask'] = None
+    payload['alwayson_scripts']['ReActor']['args'][0]['im'] = inputface
+    payload['prompt'] = prompt
+    payload['negative_prompt'] = neg
+    loop = asyncio.get_event_loop()
+    response = await loop.run_in_executor(None, partial(requests.post, url=f'{config["sd"]["url"]}sdapi/v1/txt2img', json=payload))
+    r = response.json()
+    if 'error' in r.keys():
+        print(r)
+    else:
+        for n, i in enumerate(r['images']):
+            print("saving image ", n)
+            image = Image.open(io.BytesIO(base64.b64decode(i.split(",", 1)[0])))
+
+    filename = 'output'+str("test123")
+    # impath = os.path.join(sdsavedir, filename + ".png")
+    impath = os.path.join("outputs/"+ filename +  ".png")
+    print(impath)
+    image.save(impath)
+    status["apps"]["lawmaker"]['stage'] = 2
+    # print( sdsavedir + filename + ".png saved")
+    print(impath + ".png saved")
+    status["sdparams"]["aiready"] = True
+    statusSend(status)
 
 
 
@@ -109,7 +164,7 @@ async def handler(websocket):
     while True:
         try:
             message = await websocket.recv()
-            print(message)
+            # print(message)
             event = json.loads(message)
             print(event["type"])
             if event["type"] == "status":
@@ -145,8 +200,13 @@ async def handler(websocket):
            
                 elif event["command"] == "inputimage1":
                     status["apps"]["lawmaker"]["stage"] = 1
-                    inputimg = event["data"]
-                    print(inputimg[0:100])
+                    print("generating image")
+
+                    decode_and_save_base64(event["data"], "/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/kop.jpg")
+                    await generateAndSwapFace("", "")
+
+                    # inputimg = event["data"]
+                    # print(inputimg[0:100])
                     statusSend(status)
 
 

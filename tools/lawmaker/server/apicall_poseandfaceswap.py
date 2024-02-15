@@ -59,14 +59,16 @@ if __name__ == '__main__':
     controlnetpose = encode_file_to_base64("img/pose.png")
     # controlnetpose = "img/pose.png"
     # inputface = encode_file_to_base64("img/kop.jpg")
-    inputface = "img/kop.jpg"
+    # inputface = Image.open("img/kop.jpg")
+    inputface = "/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/kop.jpg"
+    # inputface = "img/kop.jpg"
     prompt = "(8k, best quality, masterpiece, highly detailed:1.1),realistic photo of fantastic happy woman,hairstyle of blonde and red short bob hair,modern clothing,cinematic lightning,film grain,dynamic pose,bokeh,dof"
     neg = "ng_deepnegative_v1_75t,worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),((grayscale)),negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred))"
     payload['alwayson_scripts']['ControlNet']['args'][0]['image']['image'] = controlnetpose
     payload['alwayson_scripts']['ControlNet']['args'][0]['image']['mask'] = None
     payload['alwayson_scripts']['ReActor']['args'][0]['im'] = inputface
-    # payload['alwayson_scripts']['prompt'] = prompt
-    # payload['alwayson_scripts']['negative_prompt'] = neg
+    payload['prompt'] = prompt
+    payload['negative_prompt'] = neg
     call_txt2img_api(**payload)
 
 

@@ -17,7 +17,7 @@ pipelines = {"fine": {
           }
         }
 
-config = {}
+config = {"sd": {"url": "http://localhost:7860/"}}
 
 
 payload = {'alwayson_scripts': 
@@ -100,7 +100,7 @@ payload = {'alwayson_scripts':
             'seed_enable_extras': True, 
             'seed_resize_from_h': -1, 
             'seed_resize_from_w': -1, 
-            'steps': 20, 
+            'steps': 10, 
             'styles': [], 
             'subseed': -1, 
             'subseed_strength': 0, 

@@ -11,16 +11,29 @@ if (navigator.mediaDevices.getUserMedia) {
          console.log("Something went wrong!");
        });
 }
+
 var resultb64="";
+
+// function capture() {        
+//    var canvas = document.getElementById('canvas');     
+//    var video = document.getElementById('video');
+//    canvas.width = 500;
+//    canvas.height = 500;
+//    canvas.getContext('2d').drawImage(video, 0, 0, 500,500);  
+//    resultb64=canvas.toDataURL();
+//    document.getElementById("printresult").innerHTML = canvas.toDataURL();
+// }
+//  document.getElementById("printresult").innerHTML = resultb64;
+
 
 function  grabCamImageAndSend() {        
    var canvas = document.getElementById('canvas');     
    var video = document.getElementById('video');
-   canvas.width = 200;
-   canvas.height = 200;
-   canvas.getContext('2d').drawImage(video, 0, 0, 200,200);  
+   canvas.width = 512;
+   canvas.height = 512;
+   canvas.getContext('2d').drawImage(video, -85, 0, 682,512);  
    resultb64=canvas.toDataURL();
-   document.getElementById("printresult").innerHTML = canvas.toDataURL();
+//    document.getElementById("printresult").innerHTML = canvas.toDataURL();
     var event = {
         type: "command",
         command: "inputimage1",
@@ -37,6 +50,7 @@ $( document ).ready(function() {
 
     $("#capture").on("click", function() {
         grabCamImageAndSend()
+        // capture()
       });
     
       

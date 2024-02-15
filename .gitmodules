@@ -1,0 +1,3 @@
+[submodule "tools/faceswapgluon"]
+	path = tools/faceswapgluon
+	url = https://github.com/bilalLaaroussiElAlami/faceswapgluon

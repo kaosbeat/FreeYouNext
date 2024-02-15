@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>controller</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/control.css">
+  </head>
+  <body>
+
+    <div class="container py-4 text-center">
+      <div class="row py-3" >
+        <div class="col-3 mx-auto">
+          <div class="row mx-auto py-3 bg-primary-subtle">
+            <div class="row mx-auto py-1">
+              <button id="black" type="button" class="col-8 btn btn-primary ">black</button>
+              <button  id="blackindicator" class="col-4 disabled black btn btn-secondary">__</button>
+            </div>
+              <!-- <button id="get" type="button" class=" btn btn-primary">get</button> -->
+            <div class="row mx-auto py-1">
+              <button id="seedlock" type="button" class="col-8  btn btn-primary seedlock">img style lock</button>
+              <button  id="seedlockindicator" class="col-4 disabled seedlock btn btn-secondary">__</button>
+              
+              <input type="number" id="seednumber" class="form-control col-5" />
+              <button id="seedsend" class="btn btn-primary col-3" for="typeNumber">seed</button>
+            </div>
+            <div class="row mx-auto py-1">
+              <button id="showprompt" type="button" class="col-8 btn btn-primary ">showprompt</button>
+              <button  id="promptindicator" class="col-4 disabled showprompt btn btn-secondary">__</button>
+            </div>
+          </div>
+            
+          <div class="row mx-auto py-3 bg-info-subtle">
+            <!-- <div class="dropdown col-7 ">
+              <button class="btn btn-primary dropdown-toggle timebutton" type="button" data-bs-toggle="dropdown" aria-expanded="true">
+                sketch refresh
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item sketchrefresh" href="#">0.5</a></li>
+                <li><a class="dropdown-item sketchrefresh" href="#">1</a></li>
+                <li><a class="dropdown-item sketchrefresh" href="#">5</a></li>
+                <li><a class="dropdown-item sketchrefresh" href="#">stop</a></li>
+              </ul>
+            </div>
+            <div class="col-5">
+              <button id="sketchrefreshindicator" type="button" class=" btn disabled btn-outline-primary">__</button>
+            </div> -->
+          </div>
+          <div class="row mx-auto py-3 bg-primary-subtle" >
+            <div class="row">
+              <div class="dropdown col-7">
+                <button class="btn btn-primary dropdown-toggle timebutton" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  ai refresh
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item airefresh" href="#">2</a></li>
+                  <li><a class="dropdown-item airefresh" href="#">5</a></li>
+                  <li><a class="dropdown-item airefresh" href="#">10</a></li>
+                  <li><a class="dropdown-item airefresh" href="#">30</a></li>
+                  <li><a class="dropdown-item airefresh" href="#">stop</a></li>
+                </ul>
+              </div>
+              <div class="col-5">
+                <button id="airefreshindicator" type="button" class="btn disabled btn-outline-secondary">__</button>
+              </div>
+              <button id="aiindicator" class="col-8 btn disabled">AI status</button>
+            </div>
+          </div>  
+          <div class="row mx-auto py-3 bg-info-subtle">
+            <div class="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group">
+              <!-- <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-autumn" autocomplete="off" checked>
+              <label class="btn btn-outline-primary" for="vbtn-autumn">autumn</label>
+              <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-winter" autocomplete="off">
+              <label class="btn btn-outline-primary" for="vbtn-winter">winter</label>
+              <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-spring" autocomplete="off">
+              <label class="btn btn-outline-primary" for="vbtn-spring">spring</label>
+              <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-summer" autocomplete="off">
+              <label class="btn btn-outline-primary" for="vbtn-summer">summer</label> -->
+              <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-hacker" autocomplete="off">
+              <label class="btn btn-outline-primary" for="vbtn-hacker">hacker</label>               
+              <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-random" autocomplete="off">
+              <label class="btn btn-outline-primary" for="vbtn-random">random</label> 
+              <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-custom" autocomplete="off">
+              <label class="btn btn-outline-primary" for="vbtn-custom">custom</label>
+            </div>
+          </div>
+
+          
+          <div class="container bg-primary-subtle">
+            <button id="resetcount" type="button" class="col-8 btn btn-primary ">resetcount</button>
+            <button  id="currentimage" class="col-3 disabled btn btn-secondary">0</button>
+            <button id="scrollbuffer" class="col-8 btn btn-primary disabled ">scrollbuffer</button>
+            <button  id="scrollimage" class="col-3 disabled btn btn-secondary">0</button>
+                 
+
+            <div class="input-group mb-3">
+              <button class="btn btn-primary col-7" for="typeNumber">startimg</button>
+              <input type="number" id="startimg" class="form-control col-4" />
+            
+            </div>
+          </div>
+                    
+
+          <div class="container bg-info-subtle">
+            <label class="form-label" for="scrollspeed">scrollspeed</label>
+            <div id="scrollspeedslider" class="range" >
+              <input type="range" class="form-range" id="scrollspeed" />
+            </div>
+          </div>
+          
+
+          <div class="container bg-primary-subtle">
+            connections
+            <ul id="connections">
+      
+            </ul>
+            <div id="readystate" class="btn disabled btn-danger">
+              not ready
+            </div>
+          </div>
+        </div>
+        <div class="col-9 text-start">
+          <div class="row">
+            
+            <div id="autumnprompts" class="seasonpromptlist">
+              <div class="display-3">Autumn</div>
+              <ul id="autumn">
+              <p class="lead text-dark prompt" cmds="autumn1 vid">With singing and dancing, the farmer celebrates the happiness of the abundant harvest. The moisture of Bacchus flows copiously and many end up in a deep sleep.</p>
+              <p class="lead text-dark prompt" cmds="autumn2 vid">The mild air brings pleasure and makes everyone forget their singing, dancing, and worries. The season invites everyone to enjoy a sweet sleep.</p>
+              <p class="lead text-dark prompt" cmds="autumn3 vid">With the new dawn come the hunters. They go hunting with dogs, horns and guns. The game flees and they follow its trail. Frightened and terrified by the noise of muskets and guns, the wounded animal threatens to escape, but it dies exhausted during the pursuit.</p>
+              </ul>
+
+            </div>
+            <div id="winterprompts" class="seasonpromptlist">
+              <div class="display-3">Winter</div>
+
+              <ul id="winter">
+                <p class="lead text-dark prompt" cmds="winter1 vid">Shivering with cold in the icy snow, in the whipping gusts of the stormy wind,
+                  you walk, stamping your feet, shaking with your teeth from the frost.</p>
+                <p class="lead text-dark prompt" cmds="winter1 novid">Spend the day contentedly in front of the fireplace, while it rains outside.</p>
+                <p class="lead text-dark prompt" cmds="winter3 vid">Slowly walking on the icy path, cautiously, afraid of stumbling. Then, an abrupt turn, slipping, falling to the ground. Getting up again on the ice and carefully hastening, so that it won't crack. Suddenly the Sirocco, the Borea and all other winds break out in a fierce battle. This is winter, it brings us its own joy.</p>
+                <p class="lead text-dark prompt" cmds="winter4 vid">Slowly walking on the icy path, cautiously, afraid of stumbling. Then, an abrupt turn, slipping, falling to the ground. Getting up again on the ice and carefully hastening, so that it won't crack. Suddenly the Sirocco, the Borea and all other winds break out in a fierce battle. This is winter, it brings us its own joy.</p>
+              </ul>
+
+            </div>            
+            <div id="springprompts" class="seasonpromptlist" >
+              <div class="display-3">Spring</div>
+              <ul id="spring">
+              <p class="lead text-dark prompt" cmds="spring1 vid">Spring is coming. The birds celebrate its return with festive song, murmuring streams flow under a gentle caressing breeze. Thunderstorms, which announce the arrival of spring, cover the sky with their dark mantle. When they fall silent, the enchanting song of the birds sounds again.</p>
+              <p class="lead text-dark prompt" cmds="spring2 vid">On the meadow covered with flowers, the goat herder sleeps under the softly rustling branches, his faithful dog beside him.</p>
+              <p class="lead text-dark prompt" cmds="spring3 vid">Encouraged by the festive sound of the bagpipes, the nymphs and the shepherds dance lightly while the spring sky appears in all its glory.</p>
+              <p class="lead text-dark prompt" cmds="spring4 vid">Piazolla style, Encouraged by the festive sound of the bagpipes, the nymphs and the shepherds dance lightly while the spring sky appears in all its glory. </p>
+                </ul>
+
+            </div>
+            <div id="summerprompts" class="seasonpromptlist" >
+              <div class="display-3">Summer</div>
+              <ul id="summer">
+                <p class="lead text-dark prompt" cmds="summer1 vid">Under the oppressive heat of the fierce sun, man and herd wilt, the pine tree scorches. We hear the cuckoo, soft songs of the thrush and finch. A gentle breeze stirs the air, but suddenly the north wind rises. The herd trembles at the storm and its fate.</p>
+                <p class="lead text-dark prompt" cmds="summer2 vid">The fear of lightning and thunder deprives the shepherd of his rest, flies and hornets swarm angrily around.</p>
+                <p class="lead text-dark prompt" cmds="summer2 novid">Ah, his fear proves to be well-founded... The sky thunders and lightning strikes, hail devastates the corn fields and other grain.</p>
+                <p class="lead text-dark prompt" cmds="summer2 novid">Ah, his fear proves to be well-founded... The sky thunders and lightning strikes, hail devastates the corn fields and other grain.</p>
+              </ul>
+
+            </div>
+            <div id="hackerprompts" class="seasonpromptlist">
+              <div class="display-3">hacker</div>
+              <ul id="hacker">
+              <p class="lead text-dark prompt" cmds="hacker1 vid">
+                A hacker discovers a mysterious program hidden within the internet. The computer screen shows a dark interface with glowing icons. The hackers face is shown in a mix of curiosity and concern. On the computer monitor, we see an image of a clock or timepiece, hinting at the program's ability to manipulate time.
+              </p>
+              <p class="lead text-dark prompt" cmds="hacker2 vid">People start to watch the movies created by the program, and we see them being pulled into an alternate world filled with vibrant colors. The scene shows various characters from different time periods and backgrounds interacting with each other. In this scene, we can observe small objects or artifacts that reflect the character's personalities or professions an inventor with gears in their pocket.
+              </p>
+              <p class="lead text-dark prompt" cmds="hacker3 vid">
+                Echo realizes that people are not coming back to reality after watching the movies. They're shown sitting in front of their computer, looking worried and determined. On the desk next to them, we can see a stack of printed documents or notes, suggesting that Echo has been researching the program and its effects on those who watch it.
+
+              </p>
+              <p class="lead text-dark prompt" cmds="hacker4 vid">
+                Echo meets others who have been transported into this new world. They gather together, looking confused but hopeful. The scene is set in a lush, timeless landscape filled with fantastical creatures and architectural wonders. In the background, we can see towering structures or natural formations that hint at the program's ability to manipulate time and space.
+
+              </p>
+              <p class="lead text-dark prompt" cmds="hacker5 vid">
+                Echo and the group decide to work together to find a way back to their own timeline. They're shown discussing strategy and exchanging ideas while sitting around a campfire in the alternate world. The fire casts eerie shadows on their faces, emphasizing their determination. In this scene, we can observe small details that reveal each character's personality or background (e.g., a leather satchel containing tools for one of the characters).
+              </p>
+              <p class="lead text-dark prompt" cmds="hacker6 vid">
+                Echo and the group make a decisive move against the forces that control the time-traveling technology. They're shown planning and executing a daring heist to obtain a crucial component needed to weaken the system. The scene is filled with tension and excitement. In this scene, we can observe small details that reveal each character's skillset or expertise (e.g., a lockpick set for one of the characters).
+
+              </p>
+              <p class="lead text-dark prompt" cmds="hacker7 vid">
+                As a result of their efforts, some individuals begin to return to reality. We see Echo watching as their friends come back one by one, looking relieved and emotional. The screen fades to black, leaving the fate of the others uncertain and opening up the possibility for future adventures. In this scene, we can observe small details that reveal each character's emotional state upon returning to reality (e.g., a tear rolling down one of their cheeks).
+
+              </p>
+              </ul>
+
+            </div>
+            <div id="customprompts" class="seasonpromptlist" >
+              <div class="display-3">Custom</div>
+              <label class="form-label" for="customprompt">Custom Prompt</label>
+              <div id="custom">
+                <p id="currentcustomprompt" class="lead text-dark prompt"></p>
+              </div>
+              <div class="form-outline">
+                <textarea class="form-control" id="customprompt" rows="4"></textarea>
+              </div>
+              <div class="row mx-auto py-1">
+                <button id="custompromptsubmit" type="button" class="col-12 btn btn-primary ">submit prompt</button>
+                <!-- <button  id="blackindicator" class="col-4 disabled black btn btn-secondary">__</button> -->
+              </div>
+
+
+              <label class="form-label" for="custompromptprefix">Custom Prompt Prefix</label>    
+              <div class="form-outline">
+                <textarea class="form-control" id="custompromptprefix" rows="4"></textarea>
+              </div>
+              <p class="lead text-dark styleprompt"></p>
+              <div class="row mx-auto py-1">
+                <button id="custompromptprefixsubmit" type="button" class="col-12 btn btn-primary ">submit prefix</button>
+                <!-- <button  id="blackindicator" class="col-4 disabled black btn btn-secondary">__</button> -->
+              </div>
+
+              <label class="form-label" for="custompromptsuffix">Custom Prompt Suffix</label>    
+              <div class="form-outline">
+                <textarea class="form-control" id="custompromptsuffix" rows="4"></textarea>
+              </div>
+              <p class="lead text-dark styleprompt"></p>
+              <div class="row mx-auto py-1">
+                <button id="custompromptsuffixsubmit" type="button" class="col-12 btn btn-primary ">submit suffix</button>
+                <!-- <button  id="blackindicator" class="col-4 disabled black btn btn-secondary">__</button> -->
+              </div>
+
+              <label class="form-label" for="negativeprompt">negative Prompt</label>    
+              <div class="form-outline">
+                <textarea class="form-control" id="negativeprompt" rows="4"></textarea>
+              </div>
+              <p class="lead text-dark styleprompt"></p>
+              <div class="row mx-auto py-1">
+                <button id="negativepromptsubmit" type="button" class="col-12 btn btn-primary ">submit negativeprompt</button>
+                <!-- <button  id="blackindicator" class="col-4 disabled black btn btn-secondary">__</button> -->
+              </div>
+
+              <ul>
+                <p class="lead text-dark prompt"></p>
+              </ul>
+            </div>
+          </div>
+          <div class="row">
+            <div id="customprompts" class="" >
+              <div class="container">
+                <!-- <div class="row"> -->
+                  <!-- <img id="style1" src="/data/img/impressionist.png" class="stylepromptimg img-fluid col-3" alt="impressionist painting"> -->
+                  <!-- <div id="style1" class="stylepromptimg styleprompttxt img-fluid col-3">a cubism style painting, Kandinsky</div> -->
+                  <!-- <div id="style2" class="stylepromptimg styleprompttxt img-fluid col-3">a baroque style painting, Boticelli</div> -->
+                  <!-- <div id="style3" class="stylepromptimg styleprompttxt img-fluid col-3">a cubist painting with warm colors</div> -->
+                  <!-- <div id="style4" class="stylepromptimg styleprompttxt img-fluid col-3"></div> -->
+                  <!-- <img id="style2" src="/data/img/sketch.png" class="stylepromptimg img-fluid col-3" alt="pen and ink, black and white, sketch" >
+                  <img id="style3" src="/data/img/cubist.png" class="stylepromptimg img-fluid col-3" alt="cubist painting" >
+                  <img id="style4" src="/data/img/render.png" class="stylepromptimg img-fluid col-3" alt="breathtaking, digital art, render, trending on artstation" > -->
+                <!-- </div> -->
+                <!-- <div class="row">
+
+                  <p id="currentcustomstyleprompt" class="stylepromptimg lead text-dark"></p>
+                 
+                </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="logo"><img src="img/kaos_square.png"/></div>
+
+
+    
+
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="/webconfig.js" type="text/javascript"></script>
+    <script src="js/control.js" type="text/javascript"></script>
+  </body>
+
+</html>

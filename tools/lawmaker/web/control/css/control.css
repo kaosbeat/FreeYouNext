@@ -1,0 +1,101 @@
+.stylepromptimg {
+  height: 100%;
+  padding: 15px
+}
+
+.styleprompttxt{
+    background-color: antiquewhite;
+    height: inherit;
+    font-size: x-large;
+}
+
+.stylepromptimg:hover {
+background-color: aquamarine;
+}
+
+.stylepromptimgselected{
+  background-color: blue;
+}
+
+.logo{
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  width: 100px;
+  height: 50px;
+}
+
+.logo>img {
+  width: 100%;
+  height: auto;
+}
+
+.pad10 {
+  padding: 10px;
+}
+
+.scrollable {
+  overflow-y: scroll;
+  max-height: 100vh;
+}
+
+
+
+#sessioncontrols{
+  background-color: azure;
+  position: fixed;
+  bottom: 0px;
+  right: 250px;
+}
+#sessioncontrols.smaller{
+  background-color: azure;
+  position: fixed;
+  bottom: 0px;
+  right: 250px;
+}
+
+#sessioncontrols.grid{
+  background-color: red;
+  display: grid;
+}
+
+#sessioncontrols{
+text-align: center;
+}
+
+#sessioncontrols.fullscreen {
+  z-index: 2000;
+  background-color: rgb(1, 1, 46);
+  color: white;
+  width:100%;
+  height: 100%;
+  right: 0px;
+  
+}
+
+
+/* /////sortable plugin styles */
+
+body.dragging, body.dragging * {
+  cursor: move !important;
+}
+.dragged {
+  position: absolute;
+  background-color:chartreuse;
+  opacity: 0.5;
+  z-index: 2000;
+}
+#segmentlist li.placeholder {
+  position: relative;
+  background-color:chartreuse;
+  /** More li styles **/
+
+/* }#segmentlist li{
+  position: relative;
+  /* background-color:rgb(26, 50, 2); */
+  /** More li styles **/
+} */
+#segmentlist li.placeholder:before {
+  position: absolute;
+  /** Define arrowhead **/
+}

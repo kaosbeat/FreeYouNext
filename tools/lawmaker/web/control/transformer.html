@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Transformer</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/control.css">
+  </head>
+  <body>
+
+    <div class="container py-4 text-center">
+      <div class="row py-3" >
+        <div class="col-3 mx-auto">
+          <div class="row mx-auto py-3 bg-primary-subtle">
+            transformer
+            <div class="row mx-auto py-1">
+              <button id="tranform" type="button" class="col-8 btn btn-primary ">transform</button>
+              <button  id="transformindicator" class="col-4 disabled btn btn-secondary">__</button>
+            </div>
+            <div class="row mx-auto py-1">
+
+                <input type="radio" class="btn-check" name="options-outlined" id="success-outlined" autocomplete="off" checked>
+                <label class="btn btn-outline-success" for="success-outlined">GPT4all</label>
+                you wait
+                <input type="radio" class="btn-check" name="options-outlined" id="danger-outlined" autocomplete="off">
+                <label class="btn btn-outline-danger" for="danger-outlined">OpenAI</label>
+                you pay
+            </div>
+          </div>
+            
+          <div class="row mx-auto py-3 bg-info-subtle">
+            type a prompt, click submit, transform it into other info
+          </div>
+
+          <div class="row mx-auto py-3 bg-info-subtle">
+            <div class="btn-group-vertical" role="group" aria-label="Vertical radio toggle button group">
+              <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-edit" autocomplete="off">
+              <label class="btn btn-outline-primary" for="vbtn-edit">edit</label>               
+              <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-transforms" autocomplete="off">
+              <label class="btn btn-outline-primary" for="vbtn-transforms">transforms</label> 
+
+            </div>
+          </div>
+          <div class="container bg-primary-subtle">
+            connections
+            <ul id="connections">
+      
+            </ul>
+            <div id="readystate" class="btn disabled btn-danger">
+              not ready
+            </div>
+          </div>
+        </div>
+        <div class="col-9 text-start">
+          <div class="row">
+            
+            <div id="edittransforms" class="seasonpromptlist" >
+              <div class="display-3">Transformer options</div>
+              <div class="pad10 bg-primary-subtle">
+                <label class="form-label" for="imagetransformprompt">image transform prompt</label>
+                <!-- <div id="custom">
+                  <p id="currentimagetransformprompt" class="lead text-dark prompt"></p>
+                </div> -->
+                <div class="form-outline">
+                  <textarea class="form-control" id="imagetransformprompt" rows="4"></textarea>
+                </div>
+                <div class="row mx-auto py-1">
+                  <button id="imagetransformpromptsubmit" type="button" class="col-4 btn btn-primary ">submit image transform prompt</button>
+                  <!-- <button  id="blackindicator" class="col-4 disabled black btn btn-secondary">__</button> -->
+                </div>
+              </div>
+
+              <div class="pad10 bg-info-subtle">
+                <label class="form-label" for="metaphortext">Metaphor Text Prompt</label>    
+                <div class="form-outline">
+                  <textarea class="form-control" id="metaphortext" rows="4"></textarea>
+                </div>
+                <p class="lead text-dark styleprompt"></p>
+                <div class="row mx-auto py-1">
+                  <button id="metaphortextsubmit" type="button" class="col-4 btn btn-primary ">submit metaphortext</button>
+                  <!-- <button  id="blackindicator" class="col-4 disabled black btn btn-secondary">__</button> -->
+                </div>
+              
+              </div>
+              <div class="pad10 bg-primary-subtle">
+                <label class="form-label" for="metaphorpainting">Metaphor Painting Prompt</label>    
+                <div class="form-outline">
+                  <textarea class="form-control" id="metaphorpainting" rows="4"></textarea>
+                </div>
+                <p class="lead text-dark styleprompt"></p>
+                <div class="row mx-auto py-1">
+                  <button id="metaphorpaintingsubmit" type="button" class="col-4 btn btn-primary ">submit metaphorpainting</button>
+                  <!-- <button  id="blackindicator" class="col-4 disabled black btn btn-secondary">__</button> -->
+                </div>
+
+              </div>
+              <div class="pad10 bg-info-subtle">
+                <label class="form-label" for="soundtransform">soundtransform Prompt</label>    
+                <div class="form-outline">
+                  <textarea class="form-control" id="soundtransform" rows="4"></textarea>
+                </div>
+                <p class="lead text-dark styleprompt"></p>
+                <div class="row mx-auto py-1">
+                  <button id="soundtransformsubmit" type="button" class="col-4 btn btn-primary ">submit soundtransform</button>
+                  <!-- <button  id="blackindicator" class="col-4 disabled black btn btn-secondary">__</button> -->
+                </div>
+              </div>
+              <ul>
+                <p class="lead text-dark prompt"></p>
+              </ul>
+            </div>
+
+            <div id="transforms" class="seasonpromptlist" >
+              <div class="display-3">Transform</div>              
+              <div class="pad10 bg-info-subtle">
+              <div class="form-check">
+                <input class="form-check-input transformtypescheck" type="checkbox" value="" id="imagecheck" checked>
+                <label class="form-check-label" for="imagecheck">
+                  image transform
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input transformtypescheck" type="checkbox" value="" id="metaphorcheck" checked>
+                <label class="form-check-label" for="metaphorcheck">
+                  metaphor text transform
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input transformtypescheck" type="checkbox" value="" id="paintingcheck" checked>
+                <label class="form-check-label" for="paintingcheck">
+                  metaphor painting transform
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input transformtypescheck" type="checkbox" value="" id="soundcheck" checked>
+                <label class="form-check-label" for="soundcheck">
+                  sound transform
+                </label>
+              </div>
+            </div>
+              <label class="form-label" for="transformprompt">Transform Prompt</label>
+              <div id="input">
+                <p id="currenttransformprompt" class="lead text-dark prompt"></p>
+              </div>
+              <div class="form-outline">
+                <textarea class="form-control" id="transformprompt" rows="4"></textarea>
+              </div>
+              <div class="row mx-auto py-1">
+                <button id="transformpromptsubmit" type="button" class="col-12 btn btn-primary ">submit transformprompt</button>
+                <!-- <button  id="blackindicator" class="col-4 disabled black btn btn-secondary">__</button> -->
+              </div>
+              <div class="pad10 bg-primary-subtle">
+              
+                <div id="custom">
+                  <div class="display-6">Imageprompt</div>
+                  <p id="imageanswer" class="lead text-dark prompt bg-info"></p>
+
+                  <div class="display-6">Metaphor text Prompt</div>
+                  <p id="metaphoranswer" class="lead text-dark prompt bg-info"></p>
+                 
+                  <div class="display-6">Metaphor Painting prompt</div>
+                  <p id="paintinganswer" class="lead text-dark prompt bg-info"></p>
+             
+                  <div class="display-6">Sound prompt</div>
+                  <p id="soundanswer" class="lead text-dark prompt bg-info"></p>
+             
+
+                </div>
+
+                
+
+              </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="logo"><img src="img/kaos_square.png"/></div>
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="/webconfig.js" type="text/javascript"></script>
+    <script src="js/transformer.js" type="text/javascript"></script>
+  </body>
+
+</html>

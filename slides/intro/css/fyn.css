@@ -1,0 +1,45 @@
+.coltext {
+    background-color: rgba(234, 91, 55, 0.61);
+}
+
+.caption {
+    font-size: x-small;
+    padding: 5px;
+    background-color: rgba(240, 255, 255, 0.151);
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+}
+
+
+
+.fynlogo {
+    position: absolute;
+    bottom: 10px;
+    left:10px;
+    width: 150px;
+}
+.kaoslogo {
+    position: absolute;
+    bottom: 10px;
+    right:10px;
+    width: 150px;
+}
+.half {
+    float: left;
+    width: 50% !important;
+  }
+
+.third {
+    float: left;
+    width: 33% !important;
+  }
+       
+.forth {
+float: left;
+width: 25% !important;
+}
+.fifth{
+float: left;
+width: 20% !important;
+}

@@ -33,4 +33,4 @@ def checkReadyState(status):
     else:
         readystate = False
     status["connectioninfo"]["readystate"] = readystate
-    statusSend()
+    statusSend(status)

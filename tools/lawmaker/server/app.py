@@ -64,8 +64,8 @@ def genImg(prompt):
     image.save("test.png")
 
 
-input = sys.argv[1]
-pipeline = sys.argv[2]
+# input = sys.argv[1]
+# pipeline = sys.argv[2]
 output = []
 
 
@@ -73,7 +73,7 @@ def test():
     # genImg("test")
 
     context = input
-    for step in pipelines[pipeline]["steps"]:
+    for step in pipelines["pipeline"]["steps"]:
         if step["type"] == "text":
             out = transform_prompt(context, step["prompt"], step["config"]["max_tokens"])
             output.append(out)
@@ -90,14 +90,14 @@ def test():
 
 def initApp(apptype):
     global status
-    checkReadyState()
+    checkReadyState(status)
     if (apptype == "screen"):
-        statusSend()
+        statusSend(status)
     elif (apptype == "control"):
         print("ready to control")
-        statusSend()
+        statusSend(status)
     if (apptype == "transformer"):
-        statusSend()
+        statusSend(status)
 
 
 
@@ -122,13 +122,15 @@ async def handler(websocket):
                     # status["connectioninfo"]["connidjson"][event["src"]].append(str(websocket.id))
                     print(event["src"], " joined session with id:", websocket.id,
                           " and remote_address ", websocket.remote_address)
-                    statusSend()
+                    statusSend(status)
                     initApp(event["src"])
                 
 
             elif event["type"] == "command":
                 print("The command is:" + str(event))
-
+                
+                if event["command"] == "reset":
+                    status["apps"]["lawmaker"]["stage"] = 0
              
 
                 if event["command"] == "black":
@@ -138,12 +140,14 @@ async def handler(websocket):
                     else:
                         black = True
                     status["screen"]["black"] = black
-                    statusSend()
+                    statusSend(status)
 
            
-                elif event["command"] == "resetcount":
-                    status["apps"]["infinitePanorama"]["currentimage"] = 0
-                    statusSend()
+                elif event["command"] == "inputimage1":
+                    status["apps"]["lawmaker"]["stage"] = 1
+                    inputimg = event["data"]
+                    print(inputimg[0:100])
+                    statusSend(status)
 
 
 
@@ -156,9 +160,9 @@ async def handler(websocket):
                     status["connectioninfo"]["connidjson"][k].remove(websocket.id)
                     # status["connectioninfo"]["connidjson"][typeid].remove(str(websocket.id))
             print("disconnecting",  typeid)
-            statusSend()
+            statusSend(status)
             status["connectioninfo"]["connections"].remove(websocket)
-            checkReadyState()
+            checkReadyState(status)
             # print(connections)
             break
 
@@ -176,9 +180,9 @@ async def handler(websocket):
             # connid = {"screen": [], "control": []}
             # connidjson = {"screen": [], "control": []}
             print("disconnecting after error",  typeid)
-            statusSend()
+            statusSend(status)
             status["connectioninfo"]["connections"].remove(websocket)
-            checkReadyState()
+            checkReadyState(status)
             # print(connections)
             break
 

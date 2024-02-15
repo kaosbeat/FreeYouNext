@@ -91,26 +91,12 @@ function startWebsocket() {
                 break;
                 
             case "status":
-                $("#prompt").html(event.sdparams.prompt)
+                console.log(event);
+            // status["apps"]["lawmaker"]['stage'] = 2
 
-                if (event.screen.showprompt) {
-                    $("#prompt").fadeIn(500);
-                } else {
-                    $("#prompt").fadeOut(500);
-                }
-
-                // console.log(event);
-                if (event.status == "promptupdate") {
-                    $("#prompt").html(event.data)
-                }
-                else if (event.status == "currentimage") {
-                    currentimage = event.data
-                    // if scrollindex
-                }else if (event.status == "scrollspeed") {
-                    scrollspeed = event.data;
-                    console.log(scrollspeed)
-                } else {
-                    // console.log(event)
+                if (event.apps.lawmaker.stage == 2) {
+                    
+                    console.log ("stage 2 is ready")
                 }
                 break;         
             case "error":

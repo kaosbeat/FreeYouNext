@@ -126,7 +126,16 @@ status ={
     "apps": {
         "lawmaker": {
             "stage": 0, # this var keeps the current stage of the flow. Each component will only act on a certain stage, and update the stage when the task is finished
-            "aipower":0.5
+            "laws": [{"prompt":"a $age -year old $gender person eating a sandwich, world press photo ", 
+                      "negative_prompt": "small sandwich, worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),((grayscale)),negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing", 
+                      "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/pose_sandwich.png", 
+                      "law":"no sandwich"},
+                     {"prompt":"a $age -year old $gender person walking backwards on the sidewalk on a sunny day, CCTV footage, cinematic film quality ", 
+                      "negative_prompt": "walking normally,  worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),((grayscale)),negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing", 
+                      "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/pose_backwards.png", 
+                      "law":"no backward walking"},
+                     ],
+            "currentfine": {"img":"path/to/imggen/fromweb", "law":"sandwichbreakerlaw"}
             }},
 
     "screen": { "black": True, "showprompt": False,},

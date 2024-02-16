@@ -26,6 +26,34 @@ var resultb64="";
 //  document.getElementById("printresult").innerHTML = resultb64;
 
 
+function fillWebContent(image, laws){
+  var brokenLaws = document.getElementById('laws');
+  var img = document.getElementById('cctv-img');
+
+  var date = document.getElementById('date');
+  var code = document.getElementById('code');
+  var systemNumber = document.getElementById('system-number');
+  var prNumber = document.getElementById('pr-number');
+  var price = document.getElementById('price');
+
+  //Random generated fine page content
+  date.innerHTML = `${Math.floor(Math.random()*31)+1}/${Math.floor(Math.random()*12)+1}/2023`;
+  code.innerHTML = `AN.${Math.floor(Math.random()*100)}.L${Math.floor(Math.random()*100)}.${Math.floor(Math.random()*100)}/2023`
+  systemNumber.innerHTML = `System number: ${Math.floor(Math.random()*100)}JF${Math.floor(Math.random()*100)}`;
+  prNumber.innerHTML = `P.R Number AN.${Math.floor(Math.random()*100)}.L${Math.floor(Math.random()*100)}.${Math.floor(Math.random()*100)}/2023`
+  price.innerHTML = `${Math.floor(Math.random()*1000)+100}`;
+
+  //insert img
+  img.src = '/web/display/img/cctv_002.png';
+
+  //insert violated laws
+  for(var law in laws){
+    brokenLaws.insertAdjacentElement("beforeend", law);
+  }
+
+}
+
+
 function  grabCamImageAndSend() {        
    var canvas = document.getElementById('canvas');     
    var video = document.getElementById('video');
@@ -97,6 +125,7 @@ function startWebsocket() {
                 if (event.apps.lawmaker.stage == 2) {
                     
                     console.log ("stage 2 is ready")
+                    //fillWebContent();
                 }
                 break;         
             case "error":

@@ -50,6 +50,25 @@ def transform_prompt(context, transform_prompt):
 
 
 
+def test():
+    # genImg("test")
+
+    context = input
+    for step in pipelines["pipeline"]["steps"]:
+        if step["type"] == "text":
+            out = transform_prompt(context, step["prompt"], step["config"]["max_tokens"])
+            output.append(out)
+            context = out
+        elif step["type"] == "img":
+            genImg(context)
+        print(out)
+        print("adding a round")        
+        # print(sys.argv[1])
+        # print(sys.argv[2])
+
+    # print (output)
+
+
 
 
 demo = gr.Interface(

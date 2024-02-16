@@ -17,7 +17,8 @@ pipelines = {"fine": {
           }
         }
 
-config = {"sd": {"url": "http://localhost:7860/"}}
+config = {"sd": {"url": "http://localhost:7860/"}, 
+          "mugshot": "/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/kop.jpg"}
 
 
 payload = {'alwayson_scripts': 

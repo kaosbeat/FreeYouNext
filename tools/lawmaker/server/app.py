@@ -4,7 +4,9 @@ import sys
 import asyncio
 import json
 import os
+import ssl
 import websockets
+import pathlib
 import gradio as gr
 import torch
 import requests 
@@ -22,8 +24,7 @@ from datetime import datetime
 
 output = []
 
-mugshot = "/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/kop.jpg"
-
+print(config)
 
 
 def initApp(apptype):
@@ -39,49 +40,48 @@ def initApp(apptype):
 
 
 
+async def generateAndSwapFace(status, payload, prompt, negative_prompt, pose):
+	'''
+	create a new image using Automatic1111 + reactor
+	'''
+	status["sdparams"]["aiready"] = False
+	steps = status["sdparams"]["steps"]
+	denoising = status["sdparams"]["denoising"]
+	sdsavedir = status["sdparams"]["sdsavedir"]
+	controlnetpose = encode_file_to_base64(pose)
+	# controlnetpose = encode_file_to_base64("img/pose.png")
+	# controlnetpose = "img/pose.png"
+	# inputface = encode_file_to_base64("img/kop.jpg")
+	# inputface = "img/kop.jpg"
+	inputface = config["mugshot"]
+	# prompt = "(8k, best quality, masterpiece, highly detailed:1.1),realistic photo of fantastic happy woman,hairstyle of blonde and red short bob hair,modern clothing,cinematic lightning,film grain,dynamic pose,bokeh,dof"
+	payload['alwayson_scripts']['ControlNet']['args'][0]['image']['image'] = controlnetpose
+	payload['alwayson_scripts']['ControlNet']['args'][0]['image']['mask'] = None
+	payload['alwayson_scripts']['ReActor']['args'][0]['im'] = inputface
+	payload['prompt'] = prompt
+	payload['negative_prompt'] = negative_prompt
+	loop = asyncio.get_event_loop()
+	response = await loop.run_in_executor(None, partial(requests.post, url=f'{config["sd"]["url"]}sdapi/v1/txt2img', json=payload))
+	r = response.json()
+	if 'error' in r.keys():
+		print(r)
+	else:
+		for n, i in enumerate(r['images']):
+			print("saving image ", n)
+			image = Image.open(io.BytesIO(base64.b64decode(i.split(",", 1)[0])))
+	filename = 'output'+ f'{datetime.utcnow():%Y%m%d_%H%M%S}'
+	# impath = os.path.join(sdsavedir, filename + ".png")
+	impath = os.path.join("outputs/"+ filename +  ".png")
+	print(impath)
+	image.save(impath)
+	status["apps"]["lawmaker"]['currentfine']["img"] = impath
+	# print( sdsavedir + filename + ".png saved")
+	print(impath + ".png saved")
+	status["sdparams"]["aiready"] = True
+	statusSend(status)
 
 
 
-async def generateAndSwapFace(prompt, negative_prompt, pose):
-    '''
-    create a new image using Automatic1111 + reactor
-    '''
-    global status
-    status["sdparams"]["aiready"] = False
-    steps = status["sdparams"]["steps"]
-    denoising = status["sdparams"]["denoising"]
-    sdsavedir = status["sdparams"]["sdsavedir"]
-    controlnetpose = encode_file_to_base64(pose)
-    # controlnetpose = encode_file_to_base64("img/pose.png")
-    # controlnetpose = "img/pose.png"
-    # inputface = encode_file_to_base64("img/kop.jpg")
-    # inputface = "img/kop.jpg"
-    inputface = "/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/kop.jpg"
-    # prompt = "(8k, best quality, masterpiece, highly detailed:1.1),realistic photo of fantastic happy woman,hairstyle of blonde and red short bob hair,modern clothing,cinematic lightning,film grain,dynamic pose,bokeh,dof"
-    payload['alwayson_scripts']['ControlNet']['args'][0]['image']['image'] = controlnetpose
-    payload['alwayson_scripts']['ControlNet']['args'][0]['image']['mask'] = None
-    payload['alwayson_scripts']['ReActor']['args'][0]['im'] = inputface
-    payload['prompt'] = prompt
-    payload['negative_prompt'] = negative_prompt
-    loop = asyncio.get_event_loop()
-    response = await loop.run_in_executor(None, partial(requests.post, url=f'{config["sd"]["url"]}sdapi/v1/txt2img', json=payload))
-    r = response.json()
-    if 'error' in r.keys():
-        print(r)
-    else:
-        for n, i in enumerate(r['images']):
-            print("saving image ", n)
-            image = Image.open(io.BytesIO(base64.b64decode(i.split(",", 1)[0])))
-    filename = 'output'+ f'{datetime.utcnow():%Y%m%d_%H%M%S}'
-    # impath = os.path.join(sdsavedir, filename + ".png")
-    impath = os.path.join("outputs/"+ filename +  ".png")
-    print(impath)
-    image.save(impath)
-    status["apps"]["lawmaker"]['currentfine']["img"] = impath
-    # print( sdsavedir + filename + ".png saved")
-    print(impath + ".png saved")
-    status["sdparams"]["aiready"] = True
-    statusSend(status)
 
 
 
@@ -89,7 +89,7 @@ async def handler(websocket):
     """
     Handle a connection 
     """     
-    global status
+    global status, config
     while True:
         try:
             message = await websocket.recv()
@@ -128,20 +128,23 @@ async def handler(websocket):
                     status["apps"]["lawmaker"]["stage"] = 1 # generating image
                     statusSend(status)
                     print("generating image")
-                    decode_and_save_base64(event["data"], mugshot)
-                    age, gender = age_gender_detector(mugshot, 512,512)
+                    decode_and_save_base64(event["data"], config["mugshot"])
+                    age, gender = age_gender_detector(config["mugshot"], 512,512)
                     law, pose, prompt, negative_prompt = getLawPosePrompt(age, gender)
                     print(prompt)
-                    await generateAndSwapFace(prompt, negative_prompt, pose)
+                    await generateAndSwapFace(status, payload, prompt, negative_prompt, pose)  ### generates stable duiffusion image and swaps in current mugshot
                     status["apps"]["lawmaker"]['stage'] = 2 # generating image done
                     status["apps"]["lawmaker"]['currentfine']["law"] = "law" # generating image done
                     statusSend(status)
                     status["apps"]["lawmaker"]['stage'] = 3 # phase2 facxeswap
                     statusSend(status)
-                    webcamface = mugshot
+                    webcamface = config["mugshot"]
                     targetpath = status["apps"]["lawmaker"]['currentfine']["img"] 
                     outputpath= status["apps"]["lawmaker"]['currentfine']["img"] + "v2.png"
                     faceswap(targetpath, webcamface, outputpath)
+                    statusSend(status)
+                    status["apps"]["lawmaker"]['stage'] = 4 # phase2 facxeswap done
+
 
 
 
@@ -181,14 +184,15 @@ async def handler(websocket):
             break
 
 
+# ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+# localhost_pem = pathlib.Path(__file__).with_name("self.pem")
+# ssl_context.load_cert_chain(localhost_pem)
 
 async def main():    
 
+    # async with websockets.serve(handler, "localhost", 8001, max_size=2**22, ssl=ssl_context):
     async with websockets.serve(handler, "", 8001, max_size=2**22):
         await asyncio.Future()  # run forever
-    
-
-
 
 
 # if __name__ == "__main__":
@@ -199,3 +203,5 @@ if __name__ == "__main__":
 
     asyncio.run(main())
     
+
+

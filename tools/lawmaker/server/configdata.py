@@ -127,13 +127,25 @@ status ={
         "lawmaker": {
             "stage": 0, # this var keeps the current stage of the flow. Each component will only act on a certain stage, and update the stage when the task is finished
             "laws": [{"prompt":"a $age -year old $gender person eating a sandwich, world press photo ", 
-                      "negative_prompt": "small sandwich, worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),((grayscale)),negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing", 
+                      "negative_prompt": "small sandwich, worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing", 
                       "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/pose_sandwich.png", 
                       "law":"no sandwich"},
                      {"prompt":"a $age -year old $gender person walking backwards on the sidewalk on a sunny day, CCTV footage, cinematic film quality ", 
                       "negative_prompt": "walking normally,  worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),((grayscale)),negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing", 
                       "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/pose_backwards.png", 
                       "law":"no backward walking"},
+					           {"prompt":"a $age -year old $gender person walking, ((on the sidewalk)) of an (urban street), wearing casual clothes and sneakers, (black and white filter)",
+					            "negative_prompt": "worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing", 
+					            "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/better_pose_sidewalk.png",
+				            	"law":"must wear helmet"}
+				          	 {"prompt":"a $age -year old $gender person walking, on the sidewalk of an urban street, wearing (mismatching socks and hat),((black and white filter))",
+				          	  "negative_prompt": "worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing, matching socks and hat",
+			          		  "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/better_pose_sidewalk.png",
+				          	  "law":"no mismatching socks and hats"}
+			          		 {"prompt":a $age -year old $gender person walking, stepping on a leaf, (in a park), (((black and white filter))), ((foot on leaf)), wearing casual clothes",
+				          	  "negative_prompt":" worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing",
+				          	  "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/better_pose_sidewalk.png",
+					            "law":"no stepping on leaves after 8pm"}
                      ],
             "currentfine": {"img":"path/to/imggen/fromweb", "law":"sandwichbreakerlaw"}
             }},

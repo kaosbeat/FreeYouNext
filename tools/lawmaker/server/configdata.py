@@ -134,18 +134,18 @@ status ={
                       "negative_prompt": "walking normally,  worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),((grayscale)),negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing", 
                       "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/pose_backwards.png", 
                       "law":"no backward walking"},
-					           {"prompt":"a $age -year old $gender person walking, ((on the sidewalk)) of an (urban street), wearing casual clothes and sneakers, (black and white filter)",
-					            "negative_prompt": "worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing", 
-					            "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/better_pose_sidewalk.png",
-				            	"law":"must wear helmet"}
-				          	 {"prompt":"a $age -year old $gender person walking, on the sidewalk of an urban street, wearing (mismatching socks and hat),((black and white filter))",
-				          	  "negative_prompt": "worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing, matching socks and hat",
-			          		  "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/better_pose_sidewalk.png",
-				          	  "law":"no mismatching socks and hats"}
-			          		 {"prompt":a $age -year old $gender person walking, stepping on a leaf, (in a park), (((black and white filter))), ((foot on leaf)), wearing casual clothes",
-				          	  "negative_prompt":" worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing",
-				          	  "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/better_pose_sidewalk.png",
-					            "law":"no stepping on leaves after 8pm"}
+		     {"prompt":"a $age -year old $gender person walking, ((on the sidewalk)) of an (urban street), wearing casual clothes and sneakers, (black and white filter)",
+		      "negative_prompt": "worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing", 
+	              "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/better_pose_sidewalk.png",
+		      "law":"must wear helmet"}
+		     {"prompt":"a $age -year old $gender person walking, on the sidewalk of an urban street, wearing (mismatching socks and hat),((black and white filter))",
+		      "negative_prompt": "worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing, matching socks and hat",
+		      "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/better_pose_sidewalk.png",
+		      "law":"no mismatching socks and hats"}
+		     {"prompt":a $age -year old $gender person walking, stepping on a leaf, (in a park), (((black and white filter))), ((foot on leaf)), wearing casual clothes",
+		      "negative_prompt":" worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing",
+		      "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/better_pose_sidewalk.png",
+		      "law":"no stepping on leaves after 8pm"}
                      ],
             "currentfine": {"img":"path/to/imggen/fromweb", "law":"sandwichbreakerlaw"}
             }},

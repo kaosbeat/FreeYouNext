@@ -81,3 +81,115 @@ body{
     font-family: 'BpDotsSquare';
     src: url("../fonts/BPdotsSquare.otf") format("opentype");
 } */
+
+
+.header-container{
+    height: 15%;
+    display: flex;
+}
+.logo{
+    width: 25%;
+    height: 25%;
+    margin: 1%;
+    margin-left: 12%;
+    margin-top: 5%;
+
+}
+.img{
+    width: 10 vw;
+    height: 10%;
+}
+
+
+.header-info{
+    width: 79%;
+    margin: 1%;
+    margin-left: 15%;
+    margin-top: 3%;
+
+
+}
+
+.info{
+    display:flex;
+}
+
+
+.payment-info{
+    border-style: solid;
+    border-color: rgb(6, 6, 119);
+    border-width: 10px 20px 10px 20px;
+    margin: 1%;
+    padding: 1%;
+    width: 70%;
+    text-align: center;
+}
+
+.identificatie{
+    border-style: solid;
+}
+
+.proces-verbaal{
+    display: flex;
+}
+
+.identificatie-code{
+    display: flex;
+}
+
+
+.label{
+    width: 50%;
+    margin: 1%;
+}
+
+.value{
+    border-style: solid;
+    width: 50%;
+    margin: 1%;
+    text-align: center;
+}
+
+.proof-img{
+    margin: 1%;
+    width: 100%;
+    
+}
+
+/**
+.payment-code img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.payment-code p{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+**/
+.referenties-container{
+    height: 10%;
+    margin: 1%;
+    display: flex;
+}
+
+.referenties{
+    width: 45%;
+}
+
+.boodschap{
+    width:  80%;
+    margin-left: 21%;
+}
+
+.message    {
+    margin: 1%;
+}
+
+.betaling img{
+    margin-left: 1%;
+}

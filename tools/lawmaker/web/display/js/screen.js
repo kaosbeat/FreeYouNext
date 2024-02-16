@@ -1,43 +1,6 @@
 var websocketadress = CONFIG.wsurl;
-
-// var websocketadress =  "wss://192.168.1.166:8001"
 var websocket;
 
-
-let camera_button = document.querySelector("#start-camera");
-let video = document.querySelector("#video");
-let click_button = document.querySelector("#click-photo");
-let canvas = document.querySelector("#canvas");
-let dataurl_container = document.querySelector("#dataurl-container");
-let downloadBtn = document.querySelector("#downloadID");
-let resetBtn = document.querySelector("#resetBtn");
-let fileName = document.querySelector("#fileName");
-
-
-camera_button.addEventListener('click', async function() {
-  let stream = null;
- try {
-   stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
- }
- catch(error) {
-   alert(error.message);
-   return;
- }
- video.srcObject = stream;
- video.style.display = 'block';
- camera_button.style.display = 'none';
- click_button.style.display = 'block';
-});
-
-click_button.addEventListener('click', function() {
-  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-   let image_data_url = canvas.toDataURL('image/jpeg');
-downloadBtn.href = image_data_url;
-  dataurl_container.style.display = 'block';
-  downloadBtn.style.display = 'block';
-  fileName.style.display = 'block';
-  resetBtn.style.display = 'block';
-});
 
 
 var resultb64="";
@@ -73,15 +36,30 @@ function  grabCamImageAndSend() {
 
 //  document.getElementById("printresult").innerHTML = resultb64;
 
-
+var currentpage = 1
 $( document ).ready(function() {
-
-    $("#capture").on("click", function() {
-        grabCamImageAndSend()
+    
+    // $("#capture").on("click", function() {
+    //     grabCamImageAndSend()
+    //     // capture()
+    //   });
+    
+      $("#magazine").on("click", function() {
+        // grabCamImageAndSend()
+        $(".page").hide()
+        if (currentpage == 3){
+        currentpage = 1
+        } else {
+            currentpage = currentpage+1
+        }
+        $("#p"+currentpage).show()
         // capture()
+
       });
     
-      
+      $(".boete-container").hide()
+
+
 
 
 });

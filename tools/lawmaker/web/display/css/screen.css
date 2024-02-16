@@ -1,41 +1,23 @@
 body{
     overflow: hidden;
 }
-.screen{
+.fullscreen{
     position: absolute;
     top: 0px;
     left: 0px;
     background-color: rgb(255, 255, 255);
-    width: 1920px;
-    height: 1080px;
-
-}
-
-
-.infimage {
-    position:absolute;
-    top: 150px;
-    left: 970px;
     width: 1024px;
-    height: 1024px;
-    overflow: hidden;
-    z-index: 5;
-}
-#video1 {
-    position:absolute;
-    top: 150px;
-    left: 970px;
-    width: 930px;
+    height: 1366px;
 
 }
 
-#video2 {
-    position:absolute;
-    top: 150px;
-    left: 970px;
-    width: 930px;
-
+.page {
+    max-width:100%;
+    max-height:100%;
 }
+
+
+
 
 .big {
     position: absolute;

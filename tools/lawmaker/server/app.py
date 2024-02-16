@@ -138,12 +138,12 @@ async def handler(websocket):
                     statusSend(status)
                     status["apps"]["lawmaker"]['stage'] = 3 # phase2 facxeswap
                     statusSend(status)
-                    webcamface = config["mugshot"]
-                    targetpath = status["apps"]["lawmaker"]['currentfine']["img"] 
-                    outputpath= status["apps"]["lawmaker"]['currentfine']["img"] + "v2.png"
-                    faceswap(targetpath, webcamface, outputpath)
-                    statusSend(status)
-                    status["apps"]["lawmaker"]['stage'] = 4 # phase2 facxeswap done
+                    # webcamface = config["mugshot"]
+                    # targetpath = status["apps"]["lawmaker"]['currentfine']["img"] 
+                    # outputpath= status["apps"]["lawmaker"]['currentfine']["img"] + "v2.png"
+                    # faceswap(targetpath, webcamface, outputpath)
+                    # statusSend(status)
+                    # status["apps"]["lawmaker"]['stage'] = 4 # phase2 facxeswap done
 
 
 

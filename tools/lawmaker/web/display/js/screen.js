@@ -1,14 +1,60 @@
 var websocketadress = CONFIG.wsurl;
 var websocket;
 
+var video = document.querySelector("#video");
+if (navigator.mediaDevices.getUserMedia) {
+     navigator.mediaDevices.getUserMedia({ video: true })
+       .then(function (stream) {
+         video.srcObject = stream;
+       })
+       .catch(function (err0r) {
+         console.log("Something went wrong!");
+       });
+}
 
+var resultb64="";
+
+// function capture() {        
+//    var canvas = document.getElementById('canvas');     
+//    var video = document.getElementById('video');
+//    canvas.width = 500;
+//    canvas.height = 500;
+//    canvas.getContext('2d').drawImage(video, 0, 0, 500,500);  
+//    resultb64=canvas.toDataURL();
+//    document.getElementById("printresult").innerHTML = canvas.toDataURL();
+// }
+//  document.getElementById("printresult").innerHTML = resultb64;
+
+
+function  grabCamImageAndSend() {        
+   var canvas = document.getElementById('canvas');     
+   var video = document.getElementById('video');
+   canvas.width = 512;
+   canvas.height = 512;
+   canvas.getContext('2d').drawImage(video, -85, 0, 682,512);  
+   resultb64=canvas.toDataURL();
+//    document.getElementById("printresult").innerHTML = canvas.toDataURL();
+    var event = {
+        type: "command",
+        command: "inputimage1",
+        src: "screen",
+        data: resultb64
+    };
+    websocket.send(JSON.stringify(event));
+};
+
+//  document.getElementById("printresult").innerHTML = resultb64;
 
 
 $( document ).ready(function() {
 
-    $("#test").on("click", function() {
+    $("#capture").on("click", function() {
         grabCamImageAndSend()
+        // capture()
       });
+    
+      
+
 
 });
 
@@ -45,26 +91,12 @@ function startWebsocket() {
                 break;
                 
             case "status":
-                $("#prompt").html(event.sdparams.prompt)
+                console.log(event);
+            // status["apps"]["lawmaker"]['stage'] = 2
 
-                if (event.screen.showprompt) {
-                    $("#prompt").fadeIn(500);
-                } else {
-                    $("#prompt").fadeOut(500);
-                }
-
-                // console.log(event);
-                if (event.status == "promptupdate") {
-                    $("#prompt").html(event.data)
-                }
-                else if (event.status == "currentimage") {
-                    currentimage = event.data
-                    // if scrollindex
-                }else if (event.status == "scrollspeed") {
-                    scrollspeed = event.data;
-                    console.log(scrollspeed)
-                } else {
-                    // console.log(event)
+                if (event.apps.lawmaker.stage == 2) {
+                    
+                    console.log ("stage 2 is ready")
                 }
                 break;         
             case "error":
@@ -86,3 +118,4 @@ function startWebsocket() {
   
   startWebsocket();
 
+  

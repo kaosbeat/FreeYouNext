@@ -7,97 +7,81 @@ import os
 import websockets
 import gradio as gr
 import torch
-from diffusers import StableDiffusionPipeline
-
-
-# import base64
+import requests 
+import base64
 # import time
-# from functools import partial
-# import requests
-# from PIL import Image, PngImagePlugin
-# # from diffusers.utils import load_image
-# import io
-# from io import BytesIO
+from functools import partial
+from PIL import Image, PngImagePlugin
+import io
+from io import BytesIO
 from threading import Thread, Timer
-# import random
-# from helpers import *
-# import numpy
-# import copy
-# from pythonosc.osc_server import AsyncIOOSCUDPServer
-# from pythonosc.dispatcher import Dispatcher
-# from pythonosc import osc_server
-# from pathlib import Path
-# from GPTcommands import getGPTtransform
-# from sdapi import makeSDXLimage, makeSDXLimageOutpaint, makeSDXLpipeline, makeSDXLoutpaintpipe, delpipe
-# from configdata import status, config, heartbeat
-
-# from db_calls import *
-
-
-
-
-
-
-from configdata import status, pipelines
+from configdata import status, pipelines, config, payload
 from lib.status import statusEncode, statusSend, checkReadyState
-from gpt4all import GPT4All
+from lib.helpers import age_gender_detector, encode_file_to_base64, decode_and_save_base64, faceswap, getLawPosePrompt
+from datetime import datetime
 
-
-def transform_prompt(context, transform_prompt,max_tokens, ):
-    # model = GPT4All('gpt4all-falcon-q4_0.gguf', model_path="/home/kaos/.local/share/nomic.ai/GPT4All/" )
-    model = GPT4All('mistral-7b-instruct-v0.1.Q4_0.gguf', model_path="/home/kaos/.local/share/nomic.ai/GPT4All/" )
-    # model = GPT4All('Mistral Instruct')
-    system_template = context 
-    prompt_template = 'USER: {0}\nASSISTANT: '
-    with model.chat_session(system_template, prompt_template):
-        response = model.generate(transform_prompt, max_tokens=max_tokens, temp=0.7)
-        # print(response)
-        transformedprompt = response
-    return transformedprompt
-
-
-def genImg(prompt):
-    pipe = StableDiffusionPipeline.from_pretrained("runwayml/stable-diffusion-v1-5") ##, torch_dtype=torch.float32)
-    pipe = pipe.to("cuda")
-    # prompt = "a photo of an astronaut riding a horse on mars"
-    image = pipe(prompt).images[0]
-    image.save("test.png")
-
-
-input = sys.argv[1]
-pipeline = sys.argv[2]
 output = []
 
+mugshot = "/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/kop.jpg"
 
-def test():
-    # genImg("test")
-
-    context = input
-    for step in pipelines[pipeline]["steps"]:
-        if step["type"] == "text":
-            out = transform_prompt(context, step["prompt"], step["config"]["max_tokens"])
-            output.append(out)
-            context = out
-        elif step["type"] == "img":
-            genImg(context)
-        print(out)
-        print("adding a round")        
-        # print(sys.argv[1])
-        # print(sys.argv[2])
-
-    # print (output)
 
 
 def initApp(apptype):
     global status
-    checkReadyState()
+    checkReadyState(status)
     if (apptype == "screen"):
-        statusSend()
+        statusSend(status)
     elif (apptype == "control"):
         print("ready to control")
-        statusSend()
-    if (apptype == "transformer"):
-        statusSend()
+        statusSend(status)
+    if (apptype == "lawmaker"):
+        statusSend(status)
+
+
+
+
+
+
+async def generateAndSwapFace(prompt, negative_prompt, pose):
+    '''
+    create a new image using Automatic1111 + reactor
+    '''
+    global status
+    status["sdparams"]["aiready"] = False
+    steps = status["sdparams"]["steps"]
+    denoising = status["sdparams"]["denoising"]
+    sdsavedir = status["sdparams"]["sdsavedir"]
+    controlnetpose = encode_file_to_base64(pose)
+    # controlnetpose = encode_file_to_base64("img/pose.png")
+    # controlnetpose = "img/pose.png"
+    # inputface = encode_file_to_base64("img/kop.jpg")
+    # inputface = "img/kop.jpg"
+    inputface = "/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/kop.jpg"
+    # prompt = "(8k, best quality, masterpiece, highly detailed:1.1),realistic photo of fantastic happy woman,hairstyle of blonde and red short bob hair,modern clothing,cinematic lightning,film grain,dynamic pose,bokeh,dof"
+    payload['alwayson_scripts']['ControlNet']['args'][0]['image']['image'] = controlnetpose
+    payload['alwayson_scripts']['ControlNet']['args'][0]['image']['mask'] = None
+    payload['alwayson_scripts']['ReActor']['args'][0]['im'] = inputface
+    payload['prompt'] = prompt
+    payload['negative_prompt'] = negative_prompt
+    loop = asyncio.get_event_loop()
+    response = await loop.run_in_executor(None, partial(requests.post, url=f'{config["sd"]["url"]}sdapi/v1/txt2img', json=payload))
+    r = response.json()
+    if 'error' in r.keys():
+        print(r)
+    else:
+        for n, i in enumerate(r['images']):
+            print("saving image ", n)
+            image = Image.open(io.BytesIO(base64.b64decode(i.split(",", 1)[0])))
+    filename = 'output'+ f'{datetime.utcnow():%Y%m%d_%H%M%S}'
+    # impath = os.path.join(sdsavedir, filename + ".png")
+    impath = os.path.join("outputs/"+ filename +  ".png")
+    print(impath)
+    image.save(impath)
+    status["apps"]["lawmaker"]['currentfine']["img"] = impath
+    # print( sdsavedir + filename + ".png saved")
+    print(impath + ".png saved")
+    status["sdparams"]["aiready"] = True
+    statusSend(status)
 
 
 
@@ -109,7 +93,7 @@ async def handler(websocket):
     while True:
         try:
             message = await websocket.recv()
-            print(message)
+            # print(message)
             event = json.loads(message)
             print(event["type"])
             if event["type"] == "status":
@@ -122,14 +106,14 @@ async def handler(websocket):
                     # status["connectioninfo"]["connidjson"][event["src"]].append(str(websocket.id))
                     print(event["src"], " joined session with id:", websocket.id,
                           " and remote_address ", websocket.remote_address)
-                    statusSend()
+                    statusSend(status)
                     initApp(event["src"])
-                
 
             elif event["type"] == "command":
-                print("The command is:" + str(event))
-
-             
+                print("The command is:" + str(event["command"]))
+                
+                if event["command"] == "reset":
+                    status["apps"]["lawmaker"]["stage"] = 0
 
                 if event["command"] == "black":
                     black = status["screen"]["black"]
@@ -138,12 +122,26 @@ async def handler(websocket):
                     else:
                         black = True
                     status["screen"]["black"] = black
-                    statusSend()
+                    statusSend(status)
 
-           
-                elif event["command"] == "resetcount":
-                    status["apps"]["infinitePanorama"]["currentimage"] = 0
-                    statusSend()
+                elif event["command"] == "inputimage1":
+                    status["apps"]["lawmaker"]["stage"] = 1 # generating image
+                    statusSend(status)
+                    print("generating image")
+                    decode_and_save_base64(event["data"], mugshot)
+                    age, gender = age_gender_detector(mugshot, 512,512)
+                    law, pose, prompt, negative_prompt = getLawPosePrompt(age, gender)
+                    print(prompt)
+                    await generateAndSwapFace(prompt, negative_prompt, pose)
+                    status["apps"]["lawmaker"]['stage'] = 2 # generating image done
+                    status["apps"]["lawmaker"]['currentfine']["law"] = "law" # generating image done
+                    statusSend(status)
+                    status["apps"]["lawmaker"]['stage'] = 3 # phase2 facxeswap
+                    statusSend(status)
+                    webcamface = mugshot
+                    targetpath = status["apps"]["lawmaker"]['currentfine']["img"] 
+                    outputpath= status["apps"]["lawmaker"]['currentfine']["img"] + "v2.png"
+                    faceswap(targetpath, webcamface, outputpath)
 
 
 
@@ -156,9 +154,9 @@ async def handler(websocket):
                     status["connectioninfo"]["connidjson"][k].remove(websocket.id)
                     # status["connectioninfo"]["connidjson"][typeid].remove(str(websocket.id))
             print("disconnecting",  typeid)
-            statusSend()
+            statusSend(status)
             status["connectioninfo"]["connections"].remove(websocket)
-            checkReadyState()
+            checkReadyState(status)
             # print(connections)
             break
 
@@ -176,9 +174,9 @@ async def handler(websocket):
             # connid = {"screen": [], "control": []}
             # connidjson = {"screen": [], "control": []}
             print("disconnecting after error",  typeid)
-            statusSend()
+            statusSend(status)
             status["connectioninfo"]["connections"].remove(websocket)
-            checkReadyState()
+            checkReadyState(status)
             # print(connections)
             break
 

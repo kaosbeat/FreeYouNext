@@ -31,7 +31,7 @@ import gradio as gr
 
 
 
-from configdata import status
+from configdata import status, pipelines
 from lib.status import statusEncode, statusSend, checkReadyState
 from gpt4all import GPT4All
 

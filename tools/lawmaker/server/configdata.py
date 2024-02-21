@@ -84,7 +84,7 @@ payload = {'alwayson_scripts':
             'hr_second_pass_steps': 0, 
             'hr_upscaler': 'Latent', 
             'n_iter': 1, 
-            'negative_prompt': '', 
+            'negative_prompt': '',  
             'override_settings': {}, 
             'override_settings_restore_afterwards': True, 
             'prompt': 'a person looking at the camera, the full body is visible, a crime was just commited by the person', 
@@ -101,7 +101,7 @@ payload = {'alwayson_scripts':
             'seed_enable_extras': True, 
             'seed_resize_from_h': -1, 
             'seed_resize_from_w': -1, 
-            'steps': 10, 
+            'steps': 20, 
             'styles': [], 
             'subseed': -1, 
             'subseed_strength': 0, 
@@ -121,29 +121,29 @@ status ={
     "apitype" : "diffusers",  # "eden" or "automatic1111" or "diffusers", for eden check old code implementation"
 
     "connectioninfo": { "connections" : [],
-                        "connidjson" : {"screen": [], "control": [], "transformer": [], "config": []},
+                        "connidjson" : {"screen": [], "cam": [], "transformer": [], "config": []},
                         "readystate": False
                         },
     "apps": {
         "lawmaker": {
             "stage": 0, # this var keeps the current stage of the flow. Each component will only act on a certain stage, and update the stage when the task is finished
-            "laws": [{"prompt":"a $age -year old $gender person eating a sandwich, world press photo ", 
+            "laws": [{"prompt":"a $age -year old $gender person eating a huge multilayered sandwich,((Court evidence)) CCTV footage, crime, caught by the police, bad quality, granular, black and white, timestamp, subway- the face is clearly visible,  (black and white photography) ", 
                       "negative_prompt": "small sandwich, worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing", 
                       "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/pose_sandwich.png", 
-                      "law":"no sandwich"},
-                     {"prompt":"a $age -year old $gender person walking backwards on the sidewalk on a sunny day, CCTV footage, cinematic film quality ", 
+                      "law":"your sandwich contains more than 2 slices of bread"},
+                     {"prompt":"a $age -year old $gender person walking backwards on the sidewalk on a sunny day, CCTV footage, ((Court evidence)) CCTV footage, person stealing money, crime, caught by the police, bad quality, granular, black and white, timestamp, subway (black and white photography)", 
                       "negative_prompt": "walking normally,  worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),((grayscale)),negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing", 
                       "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/pose_backwards.png", 
                       "law":"no backward walking"},
-                        {"prompt":"a $age -year old $gender person walking, ((on the sidewalk)) of an (urban street), wearing casual clothes and sneakers, (black and white filter)",
+                        {"prompt":"a $age -year old $gender person walking, ((on the sidewalk)) of an (urban street), wearing casual clothes and sneakers,((Court evidence)) CCTV footage, crime, caught by the police, bad quality, granular, black and white, timestamp, subwaye, the face is clearly visible,  (black and white photography)",
                         "negative_prompt": "worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing", 
                             "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/better_pose_sidewalk.png",
                         "law":"must wear helmet"},
-                        {"prompt":"a $age -year old $gender person walking, on the sidewalk of an urban street, wearing (mismatching socks and hat),((black and white filter))",
+                        {"prompt":"a $age -year old $gender person walking, on the sidewalk of an urban street, wearing ((mismatching socks and hat)),Criminal committing a crime in public, visible face, looking at camera, CCTV footage the face is clearly visible, (((really weird hat on head))) (black and white photography)",
                         "negative_prompt": "worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing, matching socks and hat",
                         "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/better_pose_sidewalk.png",
                         "law":"no mismatching socks and hats"},
-                        {"prompt":"a $age -year old $gender person walking, stepping on a leaf, (in a park), (((black and white filter))), ((foot on leaf)), wearing casual clothes",
+                        {"prompt":"a $age -year old $gender person walking, stepping on a leaf, (in a park),, ((foot on leaf)), wearing casual clothes  ((Court evidence)) CCTV footage, person committing crime, the face is clearly visible,  ((black and white photography))",
                         "negative_prompt":" worst quality,low quality,normal quality,lowres,bad anatomy,bad hands,((monochrome)),disfigured, deformed, helmet,negative_hand-neg,badhandv4,nude,naked,strabismus,cross-eye,heterochromia,((blurred)), anime, drawing",
                         "pose":"/home/kaos/Documents/kaotec/FreeYouNext/tools/lawmaker/server/img/poses/better_pose_sidewalk.png",
                         "law":"no stepping on leaves after 8pm"}
@@ -163,7 +163,7 @@ status ={
                     "height": 1024,
                     "sdsavedir": "data/out/coretest",
                     "sampler_index": "DPM++ SDE Karras",
-                    "steps":10,
+                    "steps":20,
                     "denoising":1,
                     "promptmethod": "osc", #osc for external messages, random for random selection from prompts   
                     "prompt": prompts[0],

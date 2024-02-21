@@ -28,7 +28,7 @@ def statusSend(status):
 
 def checkReadyState(status):
     if (len(status["connectioninfo"]["connidjson"]["screen"]) > 0) and \
-        (len(status["connectioninfo"]["connidjson"]["control"]) > 0):
+        (len(status["connectioninfo"]["connidjson"]["cam"]) > 0):
         readystate = True
     else:
         readystate = False

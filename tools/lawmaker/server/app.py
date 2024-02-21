@@ -32,8 +32,8 @@ def initApp(apptype):
     checkReadyState(status)
     if (apptype == "screen"):
         statusSend(status)
-    elif (apptype == "control"):
-        print("ready to control")
+    elif (apptype == "cam"):
+        print("ready to cam")
         statusSend(status)
     if (apptype == "lawmaker"):
         statusSend(status)
@@ -78,7 +78,7 @@ async def generateAndSwapFace(status, payload, prompt, negative_prompt, pose):
 	# print( sdsavedir + filename + ".png saved")
 	print(impath + ".png saved")
 	status["sdparams"]["aiready"] = True
-	statusSend(status)
+	# statusSend(status)
 
 
 
@@ -114,37 +114,36 @@ async def handler(websocket):
                 
                 if event["command"] == "reset":
                     status["apps"]["lawmaker"]["stage"] = 0
+                    statusSend(status)
 
-                if event["command"] == "black":
-                    black = status["screen"]["black"]
-                    if black:
-                        black = False
-                    else:
-                        black = True
-                    status["screen"]["black"] = black
+
+                elif event["command"] == "grabimage":
+                    #send command to grab image
+                    status["apps"]["lawmaker"]["stage"] = 1
                     statusSend(status)
 
                 elif event["command"] == "inputimage1":
-                    status["apps"]["lawmaker"]["stage"] = 1 # generating image
-                    statusSend(status)
-                    print("generating image")
-                    decode_and_save_base64(event["data"], config["mugshot"])
-                    age, gender = age_gender_detector(config["mugshot"], 512,512)
-                    law, pose, prompt, negative_prompt = getLawPosePrompt(age, gender)
-                    print(prompt)
-                    await generateAndSwapFace(status, payload, prompt, negative_prompt, pose)  ### generates stable duiffusion image and swaps in current mugshot
-                    status["apps"]["lawmaker"]['stage'] = 2 # generating image done
-                    status["apps"]["lawmaker"]['currentfine']["law"] = "law" # generating image done
-                    statusSend(status)
-                    status["apps"]["lawmaker"]['stage'] = 3 # phase2 facxeswap
-                    statusSend(status)
-                    # webcamface = config["mugshot"]
-                    # targetpath = status["apps"]["lawmaker"]['currentfine']["img"] 
-                    # outputpath= status["apps"]["lawmaker"]['currentfine']["img"] + "v2.png"
-                    # faceswap(targetpath, webcamface, outputpath)
-                    # statusSend(status)
-                    # status["apps"]["lawmaker"]['stage'] = 4 # phase2 facxeswap done
+                    if (status["sdparams"]["aiready"]) : 
+                        status["sdparams"]["aiready"] = False
+                        status["apps"]["lawmaker"]["stage"] = 2 # generating image
+                        statusSend(status)
+                        print("generating image")
+                        decode_and_save_base64(event["data"], config["mugshot"])
+                        age, gender = age_gender_detector(config["mugshot"], 512,512)
+                        law, pose, prompt, negative_prompt = getLawPosePrompt(age, gender)
+                        print(prompt)
+                        await generateAndSwapFace(status, payload, prompt, negative_prompt, pose)  ### generates stable duiffusion image and swaps in current mugshot
+                        status["apps"]["lawmaker"]['stage'] = 3 # generating image done
+                        status["apps"]["lawmaker"]['currentfine']["law"] = law # generating image done
+                        status["sdparams"]["aiready"] = True
+                        statusSend(status)
+                
 
+
+
+                elif event["command"] == "sendfine":
+                    status["apps"]["lawmaker"]["stage"] = 5 # generating image
+                    statusSend(status)
 
 
 

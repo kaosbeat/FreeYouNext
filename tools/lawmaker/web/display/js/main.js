@@ -1,3 +1,7 @@
+var websocketadress = CONFIG.wsurl;
+var websocket;
+
+
 let camera_button = document.querySelector("#start-camera");
 let video = document.querySelector("#video");
 let click_button = document.querySelector("#click-photo");
